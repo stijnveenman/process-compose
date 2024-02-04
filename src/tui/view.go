@@ -182,7 +182,11 @@ func (pv *pcView) onAppKey(event *tcell.EventKey) *tcell.EventKey {
 		pv.logsText.SearchPrev()
 		pv.logsText.SetTitle(pv.getLogTitle(pv.getSelectedProcName()))
 	case pv.shortcuts.ShortCutKeys[ActionLogFindExit].key:
-		pv.exitSearch()
+		if event.Key() == tcell.KeyEsc && pv.pages.HasPage(PageDialog) {
+			pv.pages.RemovePage(PageDialog)
+		} else {
+			pv.exitSearch()
+		}
 	case pv.shortcuts.ShortCutKeys[ActionNsFilter].key:
 		pv.showNsFilter()
 	default:
